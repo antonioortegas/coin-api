@@ -1,16 +1,24 @@
 import { Router } from "express"
-//import { createRequire } from "node:module"
-//import { randomUUID } from "node:crypto"
-//import zod from "zod"
+import { readFile } from "fs/promises"
+import path from "path"
+const root = new URL("https://github.com/antonioortegas/coin-images-db/tree/main/coins")
+const json = JSON.parse(
+    await readFile(
+        new URL("../models/coins.json", import.meta.url)
+    )
+)
 
 export const router = Router()
 
 router.get("/", (req, res) => {
-    res.send("Hello World!")
-    // TODO : Return a json with all available routes
+    res.send("routes, /")
 })
 
 router.get("/coins", (req, res) => {
-    res.send("/coins")
-    // TODO : Return a json with all coins info
+    
+    json.collection.forEach(coin => {
+        const src = path.join(root.toString(), coin.type, coin.year, coin.country + ".jpg")
+        coin.src = src
+    })
+    res.send(json)
 })

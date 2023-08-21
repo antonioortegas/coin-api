@@ -1,3 +1,5 @@
 images
 .eslintrc.json
 node_modules
+models/coins-with-src.json
+utils
